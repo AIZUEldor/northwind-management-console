@@ -19,6 +19,7 @@ namespace NorthwindManagement.Models
         public string? ShipCity { get; set; }
         public string? ShipCauntry { get; set; }
 
+        public decimal? Freight { get; set; }
 
     }
 }

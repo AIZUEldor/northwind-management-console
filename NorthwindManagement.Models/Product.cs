@@ -8,7 +8,7 @@ namespace NorthwindManagement.Models
 {
     public class Product
     {
-        public int PraductId { get; set; }
+        public int ProductId { get; set; }
         public string ProductName { get; set; } = "";
         public int? CategoryId { get; set; }
         public decimal? UnitPrice { get; set; }

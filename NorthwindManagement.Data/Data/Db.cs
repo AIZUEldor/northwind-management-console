@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Data.SqlClient;
 
-namespace NorthwindManagement.Data.Data
+namespace NorthwindManagement.Data
 {
-    internal class Db
+    public static class Db
     {
+        private static readonly string _connectionString =
+    "Server=(localdb)\\MSSQLLocalDB;Database=Lesson1Course;Trusted_Connection=True;TrustServerCertificate=True;";
+
+
+        public static SqlConnection CreateConnection()
+        {
+            return new SqlConnection(_connectionString);
+        }
     }
 }

@@ -48,7 +48,7 @@ WHERE OrderID=@id", conn);
                     ProductId = r.GetInt32(1),
                     UnitPrice = r.GetDecimal(2),
                     Quantity = r.GetInt16(3),
-                    Discount = (float)r.GetDouble(4) // ba’zi DB’da real/float ko‘rinishida bo‘lishi mumkin
+                    Discount = (float)r.GetDouble(4) 
                 });
             }
 

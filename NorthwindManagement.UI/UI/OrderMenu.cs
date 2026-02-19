@@ -77,7 +77,7 @@ namespace NorthwindManagement.UI
             Console.Write("Freight (optional): ");
             order.Freight = decimal.TryParse(Console.ReadLine(), out decimal freight) ? freight : (decimal?)null;
 
-            // Items kiritish
+            
             var items = new List<(int productId, short quantity)>();
 
             Console.WriteLine("\nMahsulot qo'shish (ProductId va Quantity). Tugatish uchun ProductId=0 kiriting.");
@@ -107,9 +107,9 @@ namespace NorthwindManagement.UI
             try
             {
                 int newOrderId = _service.CreateOrderWithDetails(order, items);
-                Console.WriteLine($"\nOrder yaratildi ✅ OrderID={newOrderId}");
+                Console.WriteLine($"\nOrder yaratildi  OrderID={newOrderId}");
 
-                // Darrov check ko'rsatamiz
+                
                 var receipt = _service.GetReceipt(newOrderId);
                 if (receipt != null)
                 {

@@ -6,7 +6,7 @@ namespace NorthwindManagement.Data.Repositories
 {
     public class OrderRepository
     {
-        // Transaction ishlatish uchun overload (OrderService ichida transaction qilamiz)
+        
         public int CreateOrder(Order o, SqlConnection conn, SqlTransaction tx)
         {
             using var cmd = new SqlCommand(@"
@@ -32,7 +32,7 @@ SELECT CAST(SCOPE_IDENTITY() AS int);", conn, tx);
             return (int)cmd.ExecuteScalar();
         }
 
-        // Oddiy holatda (transaction yo‘q) ham ishlashi uchun
+        
         public int CreateOrder(Order o)
         {
             using var conn = Db.CreateConnection();
@@ -71,7 +71,7 @@ WHERE OrderID=@id", conn);
             return new Order
             {
                 OrderId = r.GetInt32(0),
-                CustomerId = r.IsDBNull(1) ? null : r.GetString(1).Trim(), // nchar(5) bo‘lishi mumkin
+                CustomerId = r.IsDBNull(1) ? null : r.GetString(1).Trim(), 
                 EmployeeId = r.IsDBNull(2) ? null : r.GetInt32(2),
                 OrderDate = r.IsDBNull(3) ? null : r.GetDateTime(3),
                 RequiredDate = r.IsDBNull(4) ? null : r.GetDateTime(4),

@@ -23,16 +23,16 @@ namespace NorthwindManagement.Services
             _productRepo = productRepo;
         }
 
-        // UI bu yerga order header + itemlar ro‘yxatini beradi
+        
         public int CreateOrderWithDetails(Order orderHeader, List<(int productId, short quantity)> items)
         {
             if (items == null || items.Count == 0)
                 throw new ArgumentException("Order uchun kamida 1 ta mahsulot tanlanishi kerak.");
 
-            // OrderDate berilmagan bo‘lsa bugungi sana
+            
             orderHeader.OrderDate ??= DateTime.Now;
 
-            // Productlarni tekshirib, OrderDetail listga aylantiramiz
+           
             var details = new List<OrderDetail>();
 
             foreach (var (productId, quantity) in items)
@@ -44,7 +44,6 @@ namespace NorthwindManagement.Services
                 if (product == null)
                     throw new ArgumentException($"Bunday product topilmadi: ID={productId}");
 
-                // UnitPrice NULL bo‘lsa, 0 deb olamiz (minimal)
                 var unitPrice = product.UnitPrice ?? 0m;
 
                 details.Add(new OrderDetail
@@ -56,7 +55,7 @@ namespace NorthwindManagement.Services
                 });
             }
 
-            // Transaction: Orders + OrderDetails birga yoziladi
+            
             using var conn = Db.CreateConnection();
             conn.Open();
 
@@ -77,7 +76,7 @@ namespace NorthwindManagement.Services
             }
         }
 
-        // Check chiqarish uchun ma’lumot (oddiy hisob-kitob)
+     
         public OrderReceipt? GetReceipt(int orderId)
         {
             var order = _orderRepo.GetById(orderId);
@@ -85,8 +84,7 @@ namespace NorthwindManagement.Services
 
             var details = _detailRepo.GetByOrderId(orderId);
 
-            // ProductName olish uchun (minimal yo‘l: har itemga GetById)
-            // Keyin optimizatsiya qilamiz (JOIN bilan).
+            
             var lines = new List<OrderReceiptLine>();
             decimal total = 0m;
 
@@ -126,7 +124,7 @@ namespace NorthwindManagement.Services
         }
     }
 
-    // Check uchun kichik DTO'lar (Modelsga tiqmaymiz, Service ichida turadi)
+  
     public class OrderReceipt
     {
         public int OrderId { get; set; }

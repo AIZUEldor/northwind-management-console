@@ -141,7 +141,7 @@ namespace NorthwindManagement.UI
             try
             {
                 bool ok = _service.Update(id, name ?? "", desc);
-                Console.WriteLine(ok ? "Yangilandi ✅" : "Yangilanmadi (ID topilmadi) ❗");
+                Console.WriteLine(ok ? "Yangilandi " : "Yangilanmadi (ID topilmadi) ❗");
             }
             catch (Exception ex)
             {
@@ -164,7 +164,7 @@ namespace NorthwindManagement.UI
             }
 
             bool ok = _service.Delete(id);
-            Console.WriteLine(ok ? "O'chirildi ✅" : "O'chirilmadi (ID topilmadi) ❗");
+            Console.WriteLine(ok ? "O'chirildi " : "O'chirilmadi (ID topilmadi) ❗");
 
             Console.WriteLine("Enter bosing...");
             Console.ReadLine();

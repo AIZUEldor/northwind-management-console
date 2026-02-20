@@ -1,4 +1,6 @@
 # Northwind Management Console
+![Demo](demo8.gif)
+
 
 Console-based CRUD application built with **C#** and **SQL Server** using a Northwind-style database.
 

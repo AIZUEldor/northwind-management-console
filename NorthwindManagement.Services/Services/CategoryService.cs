@@ -61,6 +61,10 @@ namespace NorthwindManagement.Services
         public bool Delete(int id)
         {
             if (id <= 0) return false;
+
+            if (_repo.HasProducts(id))
+                throw new Exception("Cannot delete this category because it has products. Delete/move products first.");
+
             return _repo.Delete(id);
         }
     }

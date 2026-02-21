@@ -13,17 +13,21 @@ namespace NorthwindManagement.Services
         private readonly OrderDetailRepository _detailRepo;
         private readonly ProductRepository _productRepo;
 
+        private readonly OrderQueryRepository _queryRepo;
+
         public OrderService(
             OrderRepository orderRepo,
             OrderDetailRepository detailRepo,
-            ProductRepository productRepo)
+            ProductRepository productRepo,
+            OrderQueryRepository queryRepo)
         {
             _orderRepo = orderRepo;
             _detailRepo = detailRepo;
             _productRepo = productRepo;
+            _queryRepo = queryRepo;
         }
 
-        
+
         public int CreateOrderWithDetails(Order orderHeader, List<(int productId, short quantity)> items)
         {
             if (items == null || items.Count == 0)
@@ -76,50 +80,44 @@ namespace NorthwindManagement.Services
             }
         }
 
-     
+
         public OrderReceipt? GetReceipt(int orderId)
         {
-            var order = _orderRepo.GetById(orderId);
-            if (order == null) return null;
+            var data = _queryRepo.GetReceiptData(orderId);
+            if (data == null) return null;
 
-            var details = _detailRepo.GetByOrderId(orderId);
-
-            
+            decimal subTotal = 0m;
             var lines = new List<OrderReceiptLine>();
-            decimal total = 0m;
 
-            foreach (var d in details)
+            foreach (var l in data.Lines)
             {
-                var p = _productRepo.GetById(d.ProductId);
-                string productName = p?.ProductName ?? $"ProductID={d.ProductId}";
-
-                decimal lineTotal = d.UnitPrice * d.Quantity * (1 - (decimal)d.Discount);
-                total += lineTotal;
+                decimal lineTotal = l.UnitPrice * l.Quantity * (1 - (decimal)l.Discount);
+                subTotal += lineTotal;
 
                 lines.Add(new OrderReceiptLine
                 {
-                    ProductId = d.ProductId,
-                    ProductName = productName,
-                    UnitPrice = d.UnitPrice,
-                    Quantity = d.Quantity,
-                    Discount = d.Discount,
+                    ProductId = l.ProductId,
+                    ProductName = l.ProductName,
+                    UnitPrice = l.UnitPrice,
+                    Quantity = l.Quantity,
+                    Discount = l.Discount,
                     LineTotal = lineTotal
                 });
             }
 
             return new OrderReceipt
             {
-                OrderId = order.OrderId,
-                CustomerId = order.CustomerId,
-                OrderDate = order.OrderDate,
-                ShipName = order.ShipName,
-                ShipAddress = order.ShipAddress,
-                ShipCity = order.ShipCity,
-                ShipCountry = order.ShipCauntry,
-                Freight = order.Freight ?? 0m,
+                OrderId = data.Header.OrderId,
+                CustomerId = data.Header.CustomerId,
+                OrderDate = data.Header.OrderDate,
+                ShipName = data.Header.ShipName,
+                ShipAddress = data.Header.ShipAddress,
+                ShipCity = data.Header.ShipCity,
+                ShipCountry = data.Header.ShipCountry,
+                Freight = data.Header.Freight,
                 Lines = lines,
-                SubTotal = total,
-                Total = total + (order.Freight ?? 0m)
+                SubTotal = subTotal,
+                Total = subTotal + data.Header.Freight
             };
         }
     }

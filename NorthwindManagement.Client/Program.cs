@@ -11,6 +11,7 @@ namespace NorthwindManagement.Client
         {
             try
             {
+
                 // 1) Repositories (Data layer)
                 var categoryRepo = new CategoryRepository();
                 var productRepo = new ProductRepository();
@@ -20,8 +21,9 @@ namespace NorthwindManagement.Client
                 // 2) Services (Business logic layer)
                 var categoryService = new CategoryService(categoryRepo);
                 var productService = new ProductService(productRepo);
-                var orderService = new OrderService(orderRepo, orderDetailRepo, productRepo);
+                var orderQueryRepo = new OrderQueryRepository();
 
+                var orderService = new OrderService(orderRepo, orderDetailRepo, productRepo, orderQueryRepo);
                 // 3) UI (Console menus)
                 var mainMenu = new MainMenu(categoryService, productService, orderService);
 
